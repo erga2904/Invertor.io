@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Step, CallBackProps, STATUS } from 'react-joyride';
+import { Step, EventData, STATUS } from 'react-joyride';
 import { usePathname } from 'next/navigation';
 
 // React-Joyride has known issues with Turbopack and dynamic imports in App Router.
@@ -125,7 +125,7 @@ export default function AppTour({ runOnMount = false }: AppTourProps) {
     return () => window.removeEventListener('start-app-tour', handleStartTour);
   }, [mounted, runOnMount, availableSteps]);
 
-  const handleJoyrideCallback = (data: CallBackProps) => {
+  const handleJoyrideCallback = (data: EventData) => {
     const { status } = data;
     const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
 
@@ -140,7 +140,7 @@ export default function AppTour({ runOnMount = false }: AppTourProps) {
 
   return (
     <Joyride
-      callback={handleJoyrideCallback}
+      onEvent={handleJoyrideCallback}
       continuous
       hideBackButton
       run={run}
