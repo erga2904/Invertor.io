@@ -9,11 +9,7 @@ import { usePathname } from 'next/navigation';
 // Using a more manual approach to ensure the component is resolved correctly.
 const Joyride = dynamic(
   () => import('react-joyride').then((mod) => {
-    // Some versions/bundlers wrap the component in 'default', others don't.
-    // We handle both cases explicitly.
-    const Component = (mod as any).default || mod;
-    // Ensure the returned value is a function (React component)
-    return typeof Component === 'function' ? Component : () => null;
+    return mod.Joyride || (mod as any).default;
   }),
   { 
     ssr: false,
@@ -26,7 +22,7 @@ export const tourSteps: Step[] = [
     target: '.sidebar-logo',
     content: 'Selamat datang di Inventor.io! Ini adalah brand aplikasi inventaris Anda.',
     placement: 'right',
-    disableBeacon: true,
+    skipBeacon: true,
   },
   {
     target: '.search-bar-tour',
@@ -142,12 +138,13 @@ export default function AppTour({ runOnMount = false }: AppTourProps) {
     <Joyride
       onEvent={handleJoyrideCallback}
       continuous
-      hideBackButton
       run={run}
       scrollToFirstStep
-      showProgress
-      showSkipButton
       steps={availableSteps}
+      options={{
+        buttons: ['close', 'primary', 'skip'], // includes skip, excludes back
+        showProgress: true,
+      }}
       styles={{
         options: {
           primaryColor: '#22c55e', // Green theme
