@@ -142,14 +142,10 @@ export default function AppTour({ runOnMount = false }: AppTourProps) {
       scrollToFirstStep
       steps={availableSteps}
       options={{
-        buttons: ['close', 'primary', 'skip'], // includes skip, excludes back
+        buttons: ['close', 'primary', 'skip'],
         showProgress: true,
-      }}
-      styles={{
-        options: {
-          primaryColor: '#22c55e', // Green theme
-          zIndex: 1000,
-        },
+        primaryColor: '#22c55e', // Green theme
+        zIndex: 1000,
       }}
     />
   );
